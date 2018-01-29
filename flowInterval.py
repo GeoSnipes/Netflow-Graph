@@ -119,7 +119,7 @@ class NetFlow:
         output.close
 
     def get_info(self):
-        return "{0}, {1}, {2}".format(self.origFile, self.destFile, self.interval)
+        return "Source: {0} \tDestination: {1} \tInterval: {2}".format(self.origFile, self.destFile, self.interval)
 
     def run(self):
         self.__formatFile()
@@ -140,10 +140,8 @@ startTimer = time.time()
 
 for pos in range(0, len(origFile)):
     nF.append(NetFlow(origFile[pos], finalOutput[pos], interval))
-    nF[pos].run()
-
-for pos in range(0, len(nF)):
     print(nF[pos].get_info())
+    nF[pos].run()
 
 stopTimer = time.time()
 timer = int((stopTimer-startTimer)*1000)/1000
