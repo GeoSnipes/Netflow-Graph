@@ -130,8 +130,8 @@ class NetFlow:
 
 origFile = ["netflowExtractedFiles/nfcapd.201801100000cswitch1.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch2.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch3.txt", "netflowExtractedFiles/nfcapd.201801100000dcdist.txt", "netflowExtractedFiles/nfcapd.201801100000igate.txt"]
 finalOutput = ["netflowFinalised/cswitch1.201801100000.txt", "netflowFinalised/cswitch2.201801100000.txt", "netflowFinalised/cswitch3.201801100000.txt", "netflowFinalised/dcdist.201801100000.txt", "netflowFinalised/igate.201801100000.txt"]
-#origFile = ["netflowExtractedFiles/nfcapd.201801100000cswitch1.txt"]
-#finalOutput = ["netflowFinalised/cswitch1.201801100000.txt"]
+#origFile = ["netflowExtractedFiles/testFile.txt"]
+#finalOutput = ["netflowFinalised/testFile.txt"]
 nF = []
 
 interval = 5
