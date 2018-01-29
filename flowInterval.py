@@ -1,6 +1,5 @@
 #flowInterval.py
 import re
-from sys import getsizeof
 import time
 import datetime
 
@@ -44,7 +43,6 @@ class NetFlow:
 
         return line
 
-
     def __getData(self):
         """time_since_epoch[0] Duration[1] Proto[2] Src_IP_Addr:Port[3] Dir[4] Dst_IP_Addr:Port[5] Flags[6] Tos[7] Packets[8] Bytes[9] pps[10] bps[11] Bpp[12] Flows[13]"""
         entries=[]
@@ -70,8 +68,7 @@ class NetFlow:
         dateEntry[0] = date
         return dateEntry
 
-
-    def __calInterval(self, data):
+    def __cal_interval(self, data):
         finalSumList = []
         cumSum = 0
         start = data[0][0]
@@ -105,7 +102,7 @@ class NetFlow:
         finalSumList.append(cumSum)
         return finalSumList
 
-    def __getFirst(self, elem):
+    def __get_first(self, elem):
         return elem[0]
 
     def __output_interval(self, intervalList, beginDataDate, endDataDate):
@@ -124,14 +121,14 @@ class NetFlow:
     def run(self):
         self.__formatFile()
         data = self.__getData()
-        data.sort(key=self.__getFirst)  # sort by first element in each sublist
-        intervalList = self.__calInterval(data)
+        data.sort(key=self.__get_first)  # sort by first element in each sublist
+        intervalList = self.__cal_interval(data)
         self.__output_interval(intervalList, data[0][0], data[len(data) - 1][0])
 
-origFile = ["netflowExtractedFiles/nfcapd.201801100000cswitch1.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch2.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch3.txt", "netflowExtractedFiles/nfcapd.201801100000dcdist.txt", "netflowExtractedFiles/nfcapd.201801100000igate.txt"]
-finalOutput = ["netflowFinalised/cswitch1.201801100000.txt", "netflowFinalised/cswitch2.201801100000.txt", "netflowFinalised/cswitch3.201801100000.txt", "netflowFinalised/dcdist.201801100000.txt", "netflowFinalised/igate.201801100000.txt"]
-#origFile = ["netflowExtractedFiles/testFile.txt"]
-#finalOutput = ["netflowFinalised/testFile.txt"]
+#origFile = ["netflowExtractedFiles/nfcapd.201801100000cswitch1.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch2.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch3.txt", "netflowExtractedFiles/nfcapd.201801100000dcdist.txt", "netflowExtractedFiles/nfcapd.201801100000igate.txt"]
+#finalOutput = ["netflowFinalised/cswitch1.201801100000.txt", "netflowFinalised/cswitch2.201801100000.txt", "netflowFinalised/cswitch3.201801100000.txt", "netflowFinalised/dcdist.201801100000.txt", "netflowFinalised/igate.201801100000.txt"]
+origFile = ["netflowExtractedFiles/testFile.txt"]
+finalOutput = ["netflowFinalised/testFile.txt"]
 nF = []
 
 interval = 5
