@@ -144,9 +144,11 @@ class NetFlow:
         return finalSumList
 
     def __get_first(self, elem):
+        """Used to sort by first element(date) in list"""
         return elem[0]
 
     def __output_interval(self, intervalList, beginDataDate, endDataDate):
+        """Create final output"""
         val = self.interval
         output = open(self.destFile,"w")
         output.write(time.strftime("%x %X",time.localtime(beginDataDate))+"\t"+time.strftime("%x %X",time.localtime(endDataDate))+"\n")
