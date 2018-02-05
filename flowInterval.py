@@ -1,9 +1,13 @@
 #flowInterval.py
+import os
 import re
 import time
 import datetime
 from math import floor, ceil
 from decimal import Decimal, getcontext
+
+#Path to netflow data
+os.chdir("D:/Users/Geovanni/Sync/Work/PhD/Netflow-Graph")
 
 class NetFlow:
 
@@ -169,7 +173,7 @@ finalOutput = ["netflowFinalised/cswitch1.201801100000.txt", "netflowFinalised/c
 #finalOutput = ["netflowFinalised/testFile.txt"]
 nF = []
 
-interval = 10
+interval = 5
 
 startTimer = time.time()
 
