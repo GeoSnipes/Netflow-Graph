@@ -3,6 +3,7 @@ import os
 import re
 import time
 import datetime
+import csv
 from math import floor, ceil
 from decimal import Decimal, getcontext
 
@@ -164,13 +165,19 @@ class NetFlow:
     def run(self):
         self.__formatFile()
         data = self.__getData()
+        
+        #update to save as csvm future implementation
+        """with open("test.csv", "w") as csvfile:
+            csvwriter = csv.writer(csvfile,  delimiter=',')
+            csvwriter.writerows(data)"""
+        
         data = self.__format_long_transmits(data)
         data.sort(key=self.__get_first)  # sort by first element in each sublist
         intervalList = self.__cal_interval(data)
         self.__output_interval(intervalList, data[0][0], data[len(data) - 1][0])
 
-origFile = ["netflowExtractedFiles/nfcapd.201801100000cswitch1.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch2.txt", "netflowExtractedFiles/nfcapd.201801100000cswitch3.txt", "netflowExtractedFiles/nfcapd.201801100000dcdist.txt", "netflowExtractedFiles/nfcapd.201801100000igate.txt"]
-finalOutput = ["netflowFinalised/cswitch1.201801100000.txt", "netflowFinalised/cswitch2.201801100000.txt", "netflowFinalised/cswitch3.201801100000.txt", "netflowFinalised/dcdist.201801100000.txt", "netflowFinalised/igate.201801100000.txt"]
+origFile = ["netflowExtractedFiles/nfcapd.201801100000igate.txt"]
+finalOutput = ["netflowFinalised/igate.201801100000.txt"]
 #origFile = ["netflowExtractedFiles/testFile.txt"]
 #finalOutput = ["netflowFinalised/testFile.txt"]
 nF = []
