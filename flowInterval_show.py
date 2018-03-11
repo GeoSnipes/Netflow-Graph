@@ -177,15 +177,8 @@ class NetFlow:
         return "Source: {0} \tDestination: {1} \tInterval: {2}".format(self.origFile, self.destFile, self.interval)
 
     def __getPort(self, row):
-        """Get either address, port, or both and remove dir, flags, pps, bps, Bpp, and flows"""
+        """Get port only and remove dir, flags, pps, bps, Bpp, and flows"""
         if True:
-            """Keep address, no ports"""
-            port = row[3].split(':')
-            row[3] = port[0]
-            port = row[5].split(':')
-            row[5] = port[0]
-        elif False:
-            """Keep ports only"""
             port = row[3].split(':')
             row[3] = port[1]
             port = row[5].split(':')
@@ -225,20 +218,18 @@ class NetFlow:
         # update to save as csv, instead of full ipaddressm keep only ports (future implementation- not finished)
         with open(self.destFile[:-3] + "csv", "w", newline="") as csvfile:
             if True:
-                """Use only ports of each address"""
                 data2 = list(map(self.__getPort, copy.deepcopy(data)))
                 csvwriter = csv.writer(csvfile, delimiter=',')
-                csvwriter.writerow(["EpochTime", "Duration", "Protocol", "Src", "Dst", "Tos", "Packets", "Bytes"])
+                csvwriter.writerow(["EpochTime", "Duration", "Protocol", "SrcPort", "DstPort", "Tos", "Packets", "Bytes"])
                 csvwriter.writerows(data2)
                 del data2
             else:
-                """Copy to file as is"""
                 csvwriter = csv.writer(csvfile, delimiter=',')
                 csvwriter.writerow(
-                    ["EpochTime", "Duration", "Protocol", "Src", "Dir", "Dst", "Flags", "Tos", "Packets", "Bytes",
+                    ["EpochTime", "Duration", "Protocol", "SrcPort", "Dir", "DstPort", "Flags", "Tos", "Packets", "Bytes",
                      "pps", "bps", "Bpp", "Flows"])
-                csvwriter.writerows(data)
-
+                csvwriter.writerows(dataCopy)
+                
         data = self.__format_long_transmits(data)
         data.sort(key=self.__get_first)  # sort by first element in each sublist
         intervalList = self.__cal_interval(data)
@@ -246,30 +237,30 @@ class NetFlow:
 
 
 origFile = [
-    "netflowExtractedFiles/nfcapd.201802010000.txt"
-    # "netflowExtractedFiles/nfcapd.201802010005.txt",
-    # "netflowExtractedFiles/nfcapd.201802010010.txt",
-    # "netflowExtractedFiles/nfcapd.201802010015.txt",
-    # "netflowExtractedFiles/nfcapd.201802010020.txt",
-    # "netflowExtractedFiles/nfcapd.201802010025.txt",
-    # "netflowExtractedFiles/nfcapd.201802010030.txt",
-    # "netflowExtractedFiles/nfcapd.201802010035.txt",
-    # "netflowExtractedFiles/nfcapd.201802010040.txt",
-    # "netflowExtractedFiles/nfcapd.201802010045.txt",
-    # "netflowExtractedFiles/nfcapd.201802010050.txt"
+    "netflowExtractedFiles/nfcapd.201802010000.txt",
+    "netflowExtractedFiles/nfcapd.201802010005.txt",
+    "netflowExtractedFiles/nfcapd.201802010010.txt",
+    "netflowExtractedFiles/nfcapd.201802010015.txt",
+    "netflowExtractedFiles/nfcapd.201802010020.txt",
+    "netflowExtractedFiles/nfcapd.201802010025.txt",
+    "netflowExtractedFiles/nfcapd.201802010030.txt",
+    "netflowExtractedFiles/nfcapd.201802010035.txt",
+    "netflowExtractedFiles/nfcapd.201802010040.txt",
+    "netflowExtractedFiles/nfcapd.201802010045.txt",
+    "netflowExtractedFiles/nfcapd.201802010050.txt"
 ]
 finalOutput = [
-    "netflowFinalised/igate.201802010000.txt"
-    # "netflowFinalised/igate.201802010005.txt",
-    # "netflowFinalised/igate.201802010010.txt",
-    # "netflowFinalised/igate.201802010015.txt",
-    # "netflowFinalised/igate.201802010020.txt",
-    # "netflowFinalised/igate.201802010025.txt",
-    # "netflowFinalised/igate.201802010030.txt",
-    # "netflowFinalised/igate.201802010035.txt",
-    # "netflowFinalised/igate.201802010040.txt",
-    # "netflowFinalised/igate.201802010045.txt",
-    # "netflowFinalised/igate.201802010050.txt"
+    "netflowFinalised/igate.201802010000.txt",
+    "netflowFinalised/igate.201802010005.txt",
+    "netflowFinalised/igate.201802010010.txt",
+    "netflowFinalised/igate.201802010015.txt",
+    "netflowFinalised/igate.201802010020.txt",
+    "netflowFinalised/igate.201802010025.txt",
+    "netflowFinalised/igate.201802010030.txt",
+    "netflowFinalised/igate.201802010035.txt",
+    "netflowFinalised/igate.201802010040.txt",
+    "netflowFinalised/igate.201802010045.txt",
+    "netflowFinalised/igate.201802010050.txt"
 ]
 # origFile = ["netflowExtractedFiles/testFile.txt"]
 # finalOutput = ["netflowFinalised/testFile.txt"]
