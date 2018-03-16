@@ -1,10 +1,11 @@
+"""count the number of times the address appears"""
 import csv
 from os import chdir
 
-chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\Netflow-Graph")
+chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\sample")
 
 dic = {}
-with open("netflowFinalised\\igate.201802010000editfinal.csv", "r") as fileIn:
+with open("igate_data.csv", "r") as fileIn:
     file = fileIn.readlines()
 
 for row in file:
@@ -15,6 +16,9 @@ for row in file:
     else:
         dic[row[3]] = 1
 
-with open("netflowFinalised\\igate.201802010000count.csv", "w") as fileOut:
-    for key, value in dic.items():
-        fileOut.write(key+","+str(value)+"\n")
+with open("igate_count.csv", "w") as fileOut:
+    sorted_data = sorted(dic, key=dic.__getitem__, reverse=True)
+    for key in sorted_data:
+         fileOut.write(key+","+str(dic[key])+"\n")
+    # for key, value in dic.items():
+    #     fileOut.write(key+","+str(value)+"\n")

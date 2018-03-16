@@ -17,3 +17,13 @@ R/R.txt
 *.csv
 *.txt
 *.txt
+.idea/vcs.xml
+.idea/modules.xml
+.idea/Netflow-Graph.iml
+.idea/misc.xml
+.idea/libraries/R_User_Library.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/workspace.xml
+netflowExtractedFiles/testFile.txt
+*.txt
+netflowFinalised/testFile.txt
