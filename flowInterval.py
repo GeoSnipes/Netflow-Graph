@@ -9,7 +9,7 @@ from decimal import Decimal, getcontext
 import copy
 
 # Path to netflow data
-os.chdir("D:/Users/Geovanni/Sync/Work/PhD/Netflow-Graph")
+os.chdir("D:/Users/Username/Sync/Work/PhD/Netflow-Graph")
 
 
 class NetFlow:
