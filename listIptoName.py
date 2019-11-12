@@ -6,8 +6,7 @@ import threading
 from ipaddress import ip_address as checkIP
 import time
 
-chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\Netflow-Graph\\netflowExtractedFiles")
-# chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\")
+chdir("D:\\Users\\'Username'\\Sync\\Work\\PhD\\Netflow-Graph\\netflowExtractedFiles"
 
 Name = {}
 file_list = [
