@@ -1,7 +1,7 @@
 import csv
 from os import chdir
 
-chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\Netflow-Graph")
+chdir("D:\\Users\\'Username'\\Sync\\Work\\PhD\\Netflow-Graph")
 
 dic= {}
 
