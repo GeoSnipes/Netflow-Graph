@@ -1,7 +1,7 @@
 import re
 import os
 
-os.chdir('D:\\Users\\Geovanni\\Sync\\Work\\PhD\\Netflow-Graph')
+os.chdir('D:\\Users\\'Username'\\Sync\\Work\\PhD\\Netflow-Graph')
 
 with open("formatted_DST_UMKC.csv") as fileIN:
     f = fileIN.read()
