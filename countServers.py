@@ -2,7 +2,7 @@
 import csv
 from os import chdir
 
-chdir("D:\\Users\\Geovanni\\Sync\\Work\\PhD\\sample")
+chdir("D:\\Users\\'Username'\\Sync\\Work\\PhD\\sample")
 
 dic = {}
 with open("igate_data.csv", "r") as fileIn:
