@@ -9,7 +9,7 @@ from decimal import Decimal, getcontext
 import copy
 
 # Path to netflow data
-os.chdir("D:/Users/Username/Sync/Work/PhD/Netflow-Graph")
+os.chdir("D:/Users/Geovanni/Sync/Work/PhD/Netflow-Graph")
 
 
 class NetFlow:
@@ -18,71 +18,6 @@ class NetFlow:
         self.origFile = origFile
         self.destFile = destFile
         self.interval = interval
-
-    def __formatFile(self):
-        """Remove extra spaces from original file and replace headings"""
-        with open(self.origFile) as origF:
-            origF.readline()  # skip first line
-            newF = open("formatted_nfcapd.txt", 'w')
-            newF.write(
-                "Date_first_seen Time_first_seen Duration Proto Src_IP_Addr:Port Dir Dst_IP_Addr:Port Flags Tos Packets Bytes pps bps Bpp Flows\n")  # fix first line titlw
-            for line in origF:
-                if (line.startswith("Summary:")):
-                    break
-                else:
-                    line = self.__megGigtoBytes(line)
-                    customLine = re.sub(r"\s{2,}", " ",
-                                        line)  # regular expression to turn all multispace into one space
-                    newF.write(customLine)  # write output to new file
-            newF.close()
-
-    def __megGigtoBytes(self, line):
-        """Some columns convert the data into mega/giga bytes, this fixes that by transforming it back into bytes"""
-        expr = re.compile("\d+\.\d+\s{1}M")  # pattern for megabytes
-        result = expr.findall(line)  # locate everywhere in the element that has the pattern
-        if len(result) > 0:
-            for found in result:
-                num = int(float(found[:-2]) * 10 ** 6)
-                line = line.replace(found, str(num))
-
-        expr = re.compile("\d+\.\d+\s{1}G(?!RE)")  # pattern for gigabytes, ignoring when protocol is GRE
-        result = expr.findall(line)
-        if len(result) > 0:
-            for found in result:
-                num = int(float(found[:-2]) * 10 ** 9)
-                line = line.replace(found, str(num))
-
-        return line
-
-    def __getData(self):
-        """Get data from file and turn into a list. Also remove space from last element in each row and formate data to epoch time"""
-        entries = []
-        with open("formatted_nfcapd.txt") as file:
-            file.readline()  # skip the first line
-            for line in file:
-                entry = line.split(" ")  # split and return in the form of a list.
-
-                # Date[0] Time[1] Duration[2] Proto[3] Src_IP_Addr:Port[4] Dir[5] Dst_IP_Addr:Port[6] Flags[7] Tos[8] Packets[9] Bytes[10] pps[11] bps[12] Bpp[13] Flows[14]
-                entry[14] = entry[14].strip()  # get rid of new line at end
-                entry = self.__formatDate(entry)  # Transform date and time into difference from epoch time
-
-                # time_since_epoch[0] Duration[1] Proto[2] Src_IP_Addr:Port[3] Dir[4] Dst_IP_Addr:Port[5] Flags[6] Tos[7] Packets[8] Bytes[9] pps[10] bps[11] Bpp[12] Flows[13]
-                entries.append(entry)  # This produces in a sense multidimensional array
-        return entries
-
-    def __formatDate(self, dateEntry):
-        """Transform date and time into difference from epoch time"""
-        date = dateEntry[0] + " " + dateEntry[1]
-        try:
-            dateFromd = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
-        except ValueError:
-            print(dateEntry)
-            print(date)
-        dateMicro = dateFromd.microsecond  # timetuple() doesnt return microseconds, so have to save that seperately
-        date = time.mktime(dateFromd.timetuple()) + (dateMicro / 10 ** 6)  # add microseconds to time
-        del dateEntry[1]
-        dateEntry[0] = date
-        return dateEntry
 
     def __format_long_transmits(self, data):
         """For transfer that last longer than the intervals"""
@@ -185,69 +120,7 @@ class NetFlow:
     def get_info(self):
         return "Source: {0} \tDestination: {1} \tInterval: {2}".format(self.origFile, self.destFile, self.interval)
 
-    def __getPort(self, row):
-        """Get either address, port, or both and remove dir, flags, pps, bps, Bpp, and flows"""
-        if True:
-            """Keep address, no ports"""
-            port = row[3].split(':')
-            row[3] = port[0]
-            port = row[5].split(':')
-            row[5] = port[0]
-        elif False:
-            """Keep ports only"""
-            port = row[3].split(':')
-            row[3] = port[1]
-            port = row[5].split(':')
-            row[5] = port[1]
-        del (row[-4:])
-        del (row[-4])
-        del (row[-5])
-        return row
-
     def run(self):
-        self.__formatFile()
-        data = self.__getData()
-        # Change protocol types to numbers
-        if False:  # Labelencoder/Onehotencoder does this properly, no longer needed
-            for row in data:
-                if row[2] == 'TCP':
-                    row[2] = 1
-                elif row[2] == 'UDP':
-                    row[2] = 2
-                elif row[2] == 'EIGRP':
-                    row[2] = 3
-                elif row[2] == 'ESP':
-                    row[2] = 4
-                elif row[2] == 'GRE':
-                    row[2] = 5
-                elif row[2] == 'ICMP':
-                    row[2] = 6
-                elif row[2] == 'IGMP':
-                    row[2] = 7
-                elif row[2] == 'IPv6':
-                    row[2] = 8
-                elif row[2] == 'L2TP':
-                    row[2] = 9
-                else:
-                    row[2] = 0
-
-        # update to save as csv, instead of full ipaddressm keep only ports (future implementation- not finished)
-        with open(self.destFile[:-3] + "csv", "w", newline="") as csvfile:
-            if False:
-                """Use only ports of each address"""
-                data2 = list(map(self.__getPort, copy.deepcopy(data)))
-                csvwriter = csv.writer(csvfile, delimiter=',')
-                csvwriter.writerow(["EpochTime", "Duration", "Protocol", "Src", "Dst", "Tos", "Packets", "Bytes"])
-                csvwriter.writerows(data2)
-                del data2
-            else:
-                """Copy to file as is"""
-                csvwriter = csv.writer(csvfile, delimiter=',')
-                csvwriter.writerow(
-                    ["EpochTime", "Duration", "Protocol", "Src", "Dir", "Dst", "Flags", "Tos", "Packets", "Bytes",
-                     "pps", "bps", "Bpp", "Flows"])
-                csvwriter.writerows(data)
-
         data = self.__format_long_transmits(data)
         data.sort(key=self.__get_first)  # sort by first element in each sublist
         intervalList = self.__cal_interval(data)

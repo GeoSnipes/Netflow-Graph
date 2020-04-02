@@ -1,0 +1,2 @@
+* relax 2 hrs constraint
+* adjust sacling to sample wise instead of entire dataset wise
