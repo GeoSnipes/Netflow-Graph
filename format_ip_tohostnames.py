@@ -23,15 +23,16 @@ class myThread(threading.Thread):
 def process_data(threadName, sample):
     global exitFlag
     global hostnames
+    self_hostnames = {}
     for ip in sample:
         if exitFlag:
             break
-        if ip in hostnames:
+        if (ip in hostnames) or (ip in self_hostnames):
             continue
-        data = get_hostname(ip)
-        queueLock.acquire()
-        hostnames[ip]=data
-        queueLock.release()
+        self_hostname[ip] = get_hostname(ip)
+    queueLock.acquire()
+    hostnames.update(self_hostnames)
+    queueLock.release()
 
 def get_hostname(ip):
     if (ip.startswith('134.193.')):
