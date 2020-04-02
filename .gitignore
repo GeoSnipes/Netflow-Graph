@@ -1,6 +1,6 @@
 /Data/*
 /sample/*
-/feather_hostnames
+/feather_*
 /.idea/*
 /tempfile_intevalsum
 /.ipynb_checkpoints/*
